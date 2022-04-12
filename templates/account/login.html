@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+        <div class="row align-items-center g-lg-5 py-5">
+            <div class="col-lg-7 text-center text-lg-start">
+                <h1 class="display-4 fw-bold lh-1 mb-3">Just Login In</h1>
+                <p class="col-lg-10 fs-4">By entering Sneaker Trading System, you will be able to move through
+                    the checkout process faster, store multiple shipping addresses, view and track your orders in your
+                    account, and much more.</p>
+            </div>
+            <div class="col-md-10 mx-auto col-lg-5">
+                <form class="p-4 p-md-5 border rounded-3 bg-light" action="{% url 'apps.account:login' %}"
+                      method="post">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            Error: Username or Password not correct!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                    <div class="form-floating mb-3">
+                        {{ form.username }}
+                        <label for="{{ form.username.id }}">{{ form.username.label }}</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        {{ form.password }}
+                        <label for="{{ form.password.id }}">{{ form.password.label }}</label>
+                    </div>
+                    <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+                    <hr class="my-4">
+                    <p class="text-center mt-2 mb-0">
+                        <a href="{% url "apps.account:register" %}">Create your account</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

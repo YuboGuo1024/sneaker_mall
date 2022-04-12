@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Home | Sneaker Trading System{% endblock %}
+{% load static %}
+
+{% block css %}
+    <link href="{% static 'css/carousel.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true"
+                    aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'images/adidas_banner.png' %}" alt="Adidas Banner">
+
+                <div class="container">
+                    <div class="carousel-caption text-start">
+                        <h1>POPULAR RIGHT NOW</h1>
+                        <p>Impossible is nothing.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/nike_banner.png' %}" alt="Nike Banner">
+
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>JUST DO IT.</h1>
+                        <p>Urban meets outdoors meets better for the world.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+		Index page
+
+{% endblock %}

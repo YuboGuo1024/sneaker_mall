@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+        <div class="row align-items-center g-lg-5 py-5">
+            <div class="col-lg-7 text-center text-lg-start">
+                <h1 class="display-4 fw-bold lh-1 mb-3">Welcome to <br> Sneaker Trading System</h1>
+                <p class="col-lg-10 fs-4">By creating an account with Sneaker Trading System, you will be able to move
+                    through
+                    the checkout process faster, store multiple shipping addresses, view and track your orders in your
+                    account, and much more.</p>
+            </div>
+            <div class="col-md-10 mx-auto col-lg-5">
+                <form class="p-4 p-md-5 border rounded-3 bg-light" action="{% url 'apps.account:register' %}"
+                      method="post">
+                    {% csrf_token %}
+
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    {{ field.label }}: {{ field.errors|striptags }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    <div class="form-floating mb-3">
+                        {{ form.username }}
+                        <label for="{{ form.username.id }}">{{ form.username.label }}</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        {{ form.email }}
+                        <label for="{{ form.email.id }}">{{ form.email.label }}</label>
+                    </div>
+                    <small class="form-text text-muted mt-0 small">
+                        At least 6 characters
+                    </small>
+                    <div class="form-floating mb-3">
+                        {{ form.password }}
+                        <label for="{{ form.password.id }}">{{ form.password.label }}</label>
+                    </div>
+                    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+                    <hr class="my-4">
+                    <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+                    <p class="text-center mt-2 mb-0">
+                        <a href="{% url "apps.account:login" %}">Already have an account?</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
