@@ -18,7 +18,8 @@ def sneaker_upload_path(instance: "SneakerImage", filename: str):
 class Brand(models.Model):
     name = models.CharField(verbose_name='Brand Name', max_length=30, default='')
     icon = models.ImageField(verbose_name='Brand Icon', upload_to=brand_upload_path)
-    description = models.TextField(verbose_name='Description', blank=True)
+    description = RichTextField(verbose_name='Description', blank=True)
+
     created_at = models.DateTimeField(verbose_name="Created At", auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(verbose_name='Updated At', auto_now=True)
 
@@ -37,7 +38,6 @@ class Brand(models.Model):
 class Sneaker(models.Model):
     brand = models.ForeignKey(Brand, verbose_name='Brand', on_delete=models.RESTRICT)
     title = models.CharField(verbose_name='Title', max_length=255, null=False, blank=False)
-    # description = models.TextField(verbose_name='Description', blank=True)
     description = RichTextField(verbose_name='Description', blank=True, null=True)
     market_price = models.DecimalField(verbose_name='Market Price', max_digits=5, decimal_places=2)
     discount_price = models.DecimalField(verbose_name='Discount Price', max_digits=5, decimal_places=2)
