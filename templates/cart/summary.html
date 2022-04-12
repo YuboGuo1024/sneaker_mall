@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="h-100 h-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col p-4 row">
+                    <div class="col-lg-7">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h2 class="mb-1">Shopping Cart</h2>
+                                <p class="my-2">Manage your <strong>items</strong> in your cart and choose delivery type
+                                </p>
+                            </div>
+                        </div>
+                        <hr>
+
+                        {% for item in cart %}
+                            {% with sneaker=item.sneaker %}
+                                <div class="card mb-3 sneaker-item" id="{{ sneaker.id }}@{{ item.sz }}"
+                                     data-id="{{ sneaker.id }}">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex flex-row align-items-center">
+                                                {% for image in sneaker.sneaker_image.all|slice:":1" %}
+                                                    <a href="{{ sneaker.get_absolute_url }}">
+                                                        <img src="{{ MEDIA_URL }}{{ image.image }}"
+                                                             class="img-fluid rounded-3" alt="Shopping item"
+                                                             style="width: 65px;">
+                                                    </a>
+                                                {% endfor %}
+                                                <div class="ms-3">
+                                                    <a href="{{ sneaker.brand.get_absolute_url }}"
+                                                       class="text-black">{{ sneaker.brand.name }}</a> <br>
+                                                    <a href="{{ sneaker.get_absolute_url }}"
+                                                       class="text-black">{{ sneaker.title }}</a>
+                                                    <p class="small mt-2 mb-0">Size: UK
+                                                        <span id="sz{{ sneaker.id }}">{{ item.sz }}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-row align-items-center">
+                                                <div style="width: 100px;">
+                                                    <p class="fw-normal mb-0">
+                                                        £ {{ sneaker.discount_price|floatformat:2 }}</p>
+                                                </div>
+                                                <div style="width: 50px;">
+                                                    <p class="fw-normal mb-0">x{{ item.qty }}</p>
+                                                </div>
+                                                <div style="width: 80px;">
+                                                    <p class="mb-0">
+                                                        £ {{ item.total_price|floatformat:2 }}</p>
+                                                </div>
+                                                <a type="button" id="delete-button"
+                                                   class="delete-button small text-muted"
+                                                   data-index="{{ sneaker.id }}@{{ item.sz }}"
+                                                   data-id="{{ sneaker.id }}">Remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {% endwith %}
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-lg-5">
+
+                        <div class="card text-black rounded-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h3 class="mb-0">Summary</h3>
+                                </div>
+                                <hr class="my-4">
+                                <div class="d-flex justify-content-between">
+                                    <p class="mb-2">Subtotal</p>
+                                    <p id="subtotal" class="mb-2 fw-bold">
+                                        £ {{ cart.get_subtotal_price|floatformat:2 }}</p>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <p class="mb-2">Shipping</p>
+                                    {#                                    <p class="mb-2 fw-bold">£ {{ cart.get_delivery_price|floatformat:2 }}</p>#}
+                                    <p class="mb-2 fw-bold">£ 0.00</p>
+                                </div>
+
+                                <hr class="my-2">
+                                <div class="d-flex justify-content-between mb-4">
+                                    <p class="mb-2">Total</p>
+                                    {#                                    <p id="total" class="mb-2 fw-bold">£ {{ cart.get_total_price|floatformat:2 }}</p>#}
+                                    <p id="total" class="mb-2 fw-bold">£ {{ cart.get_subtotal_price|floatformat:2 }}</p>
+                                </div>
+
+                                <div class="d-grid">
+                                    <a role="button" type="button" href="{% url "apps.checkout:delivery_choices" %}"
+                                       class="btn btn-primary btn-block btn-lg fw-bold">
+                                        Checkout Securely
+                                    </a>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <script>
+        $(document).on("click", ".delete-button", function (e) {
+            e.preventDefault();
+            let sneaker_id = $(this).data("id");
+            let sneaker_index = $(this).data("index");
+
+            $.ajax({
+                type: "POST",
+                url: '{% url "apps.cart:cart_delete" %}',
+                data: {
+                    sneaker_id: sneaker_id,
+                    sneaker_sz: $("#sz" + sneaker_id).text(),
+                    action: "post",
+                },
+                success: function (json) {
+                    document.getElementById(sneaker_index).remove();
+
+                    if (json.qty == 0) {
+                        total = 0;
+                        subtotal = 0;
+                    } else {
+                        {#total = (parseFloat(json.subtotal) + {{ cart.get_delivery_price }}).toFixed(2);#}
+                        total = (parseFloat(json.subtotal));
+                        subtotal = parseFloat(json.subtotal).toFixed(2);
+                    }
+                    document.getElementById("subtotal").innerHTML = subtotal;
+                    document.getElementById("cart-qty").innerHTML = json.qty;
+                    document.getElementById("total").innerHTML = total;
+                },
+                error: function (xhr, errmsg, err) {
+
+                }
+            })
+
+        })
+    </script>
+{% endblock %}

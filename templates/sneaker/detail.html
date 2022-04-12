@@ -104,6 +104,35 @@
 
         </div>
     </div>
+    <script>
+        $(document).on('click', '#add-button', function (e) {
+            e.preventDefault();
+            let sz = $('input:radio[name="options-outlined"]:checked').val()
+            if (sz == null) {
+                alert("Please choose a size");
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: "{% url 'apps.cart:cart_add' %}",
+                data: {
+                    sneaker_id: $('#add-button').val(),
+                    sneaker_sz: sz,
+                    sneaker_qty: $('#select option:selected').text(),
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'post'
+                },
+                success: function (json) {
+                    document.getElementById('cart-qty').innerHTML = json.qty
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log(err)
+                }
+
+            })
+
+        })
+    </script>
 {% endblock %}
 
 

@@ -23,4 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.sneaker.urls', namespace='apps.sneaker')),
     path('account/', include('apps.account.urls', namespace='apps.account')),
+    path('cart/', include('apps.cart.urls', namespace='apps.cart')),
+    path('checkout/', include('apps.checkout.urls', namespace='apps.checkout')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

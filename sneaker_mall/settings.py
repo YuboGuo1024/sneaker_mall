@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.account.apps.AccountConfig',
     'apps.sneaker.apps.SneakersConfig',
+    'apps.cart.apps.CartConfig',
+    'apps.checkout.apps.CheckoutConfig',
 ]
 
 MIDDLEWARE = [
@@ -68,7 +70,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'apps.sneaker.context_processors.brands',
-                # 'apps.cart.context_processors.cart',
+                'apps.cart.context_processors.cart',
             ],
         },
     },
