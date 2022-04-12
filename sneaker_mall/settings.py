@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'apps.sneaker.apps.SneakersConfig',
     'apps.cart.apps.CartConfig',
     'apps.checkout.apps.CheckoutConfig',
+    'apps.order.apps.OrderConfig',
+    'paypal.standard.ipn',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [

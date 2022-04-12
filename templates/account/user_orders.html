@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}User Orders{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+
+        <div class="col-12">
+            <h1 class="h2">User Orders</h1>
+        </div>
+        <div class="col-12 d-flex justify-content-between">
+            <div>Manage your <b>orders</b> and personal details</div>
+        </div>
+        <hr/>
+        <div class="container">
+            <ul class="nav nav-tabs" id="orderTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="finished-tab" data-bs-toggle="tab" data-bs-target="#finished"
+                            type="button"
+                            role="tab" aria-controls="finished" aria-selected="true">Finished
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="unfinished-tab" data-bs-toggle="tab"
+                            data-bs-target="#unfinished"
+                            type="button"
+                            role="tab" aria-controls="unfinished" aria-selected="false">Unfinished
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="orderTabContent">
+                <div class="tab-pane fade show active" id="finished" role="tabpanel" aria-labelledby="finished-tab">
+                    <div class="my-3">
+                        {% for order in orders %}
+                            {% if order.order_status == True %}
+                                {% include 'order_base.html' %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <div class="tab-pane fade" id="unfinished" role="tabpanel" aria-labelledby="unfinished-tab">
+                    <div class="my-3">
+                        {% for order in orders %}
+                            {% if order.order_status == False %}
+                                <div class="mb-5">
+                                    {% include 'order_base.html' %}
+                                    <div class="small text-end">
+                                        <a href="{% url 'apps.checkout:payment_process' order.id %}" role="button"
+                                           class="btn btn-outline-primary btn-sm mx-3">
+                                            Pay
+                                        </a>
+                                        <a href="{% url 'apps.order:order_delete' order.id %}" role="button"
+                                           class="btn btn-outline-danger btn-sm mx-3">
+                                            Delete
+                                        </a>
+                                    </div>
+                                    <hr class="text-muted">
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
