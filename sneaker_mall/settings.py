@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'apps.sneaker.context_processors.brands',
+                'apps.sneaker.context_processors.chart_data',
                 'apps.cart.context_processors.cart',
             ],
         },
