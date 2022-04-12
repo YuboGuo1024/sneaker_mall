@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}{{ sneaker.title }}{% endblock %}
+{% load static %}
+{% block content %}
+    <div class="container col-xl-10 col-xxl-8 px-0 py-5">
+        <nav aria-label="breadcrumb" class="my-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'apps.sneaker:index' %}" class="text-dark">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ sneaker.brand.get_absolute_url }}"
+                                               class="text-dark">{{ sneaker.brand }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ sneaker.title }}</li>
+            </ol>
+        </nav>
+        <div class="row align-items-center g-lg-5">
+            <div class="col-lg-7 text-center g-lg-5 align-self-start">
+                <div class="row">
+                    {% for image in sneaker.sneaker_image.all|slice:":1" %}
+                        <img src="{{ MEDIA_URL }}{{ image.image }}" class="img-fluid">
+                    {% endfor %}
+
+                </div>
+                <div class="row my-2">
+                    {% for image in sneaker.sneaker_image.all|slice:"1:" %}
+                        <div class="col-6 my-2">
+                            <img src="{{ MEDIA_URL }}{{ image.image }}" class="img-fluid">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-10 mx-auto col-lg-5 align-self-start">
+                <p class="fs-4 my-0">{{ sneaker.brand.name }}</p>
+                <p class="fs-4">{{ sneaker.title }}</p>
+                {% if sneaker.discount_price == sneaker.market_price %}
+                    <p class="fs-5 my-0">
+                        £ {{ sneaker.discount_price }}
+                    </p>
+                {% else %}
+                    <p class="fs-5 my-0">
+                        <span style="color: red">£ {{ sneaker.discount_price }}</span>
+                        (
+                        <del>£ {{ sneaker.market_price }}</del>
+                        )
+                    </p>
+                {% endif %}
+                <p class="text-muted">Prices include VAT & duty for customers</p>
+
+                <p class="fs-4 my-3">Select Size</p>
+                <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 g-3 my-3">
+                    {% for size in sneaker.sneaker_size.all %}
+                        {% if size.stock_num != 0 %}
+                            <input type="radio" class="btn-check" name="options-outlined" id="size-{{ size.size }}"
+                                   autocomplete="off" value="{{ size.size }}">
+                            <label class="btn btn-outline-secondary m-1" for="size-{{ size.size }}">
+                                UK {{ size.size }}
+                            </label>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div>
+                    <label for="select" class="fs-4 mb-3">Quantity</label>
+                    <select id="select" class="form-select">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+
+                <div>
+                    <p class="fs-4 my-3">Description</p>
+                    <p class="col-lg-10 fs-6">{{ sneaker.description|safe }}</p>
+                </div>
+
+                <div class="d-grid gap-2">
+
+                    <button class="btn btn-primary btn-lg" id="add-button"
+                            value="{{ sneaker.id }}">ADD TO CART
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="my-5">
+            <h4 class="my-3">Recommendation</h4>
+            <div class="row row-cols-4 row-cols-sm-3 row-cols-md-4 g-4">
+                {% for sneaker in other_sneakers|slice:":4" %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            {% for image in sneaker.sneaker_image.all %}
+                                <a href="{{ sneaker.get_absolute_url }}">
+                                    <img class="img-fluid bd-placeholder-img" width="100%" height="225"
+                                         alt="{{ sneaker.brand.name }}" src="{{ MEDIA_URL }}{{ image.image }}">
+                                </a>
+                            {% endfor %}
+                            <div class="card-body">
+                                <p class="text-dark text-decoration-none">{{ sneaker.brand.name }} {{ sneaker.title|slice:":50" }}</p>
+                                <div class="fw-bold">£ {{ sneaker.discount_price }}</div>
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}
+
+

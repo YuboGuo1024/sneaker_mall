@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Result{% endblock %}
+
+{% block content %}
+    <div class="pt-5">
+
+        <section class="pt-5 text-left container">
+            <div class="row py-lg-3">
+                <p class="fs-3">
+                    Search results for <span class="text-muted fs-4">"{{ request.GET.keywords }}"</span>
+                </p>
+            </div>
+        </section>
+        <div class="container pt-4">
+            {% include 'list_base.html' %}
+        </div>
+
+    </div>
+{% endblock %}
