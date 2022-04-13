@@ -1,4 +1,3 @@
-import simplejson as json
 from datetime import datetime
 
 from django.conf import settings
