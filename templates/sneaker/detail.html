@@ -85,14 +85,16 @@
                 {% for sneaker in other_sneakers|slice:":4" %}
                     <div class="col">
                         <div class="card shadow-sm">
-                            {% for image in sneaker.sneaker_image.all %}
+                            {% for image in sneaker.sneaker_image.all|slice:":1" %}
                                 <a href="{{ sneaker.get_absolute_url }}">
                                     <img class="img-fluid bd-placeholder-img" width="100%" height="225"
                                          alt="{{ sneaker.brand.name }}" src="{{ MEDIA_URL }}{{ image.image }}">
                                 </a>
                             {% endfor %}
                             <div class="card-body">
-                                <p class="text-dark text-decoration-none">{{ sneaker.brand.name }} {{ sneaker.title|slice:":50" }}</p>
+                                <p class="text-dark text-decoration-none mb-1">{{ sneaker.brand.name }}</p>
+                                <p class="text-dark text-decoration-none mt-0"> {{ sneaker.title|slice:":30" }}
+                                    {% if sneaker.title|length > 30 %}...{% endif %}</p>
                                 <div class="fw-bold">£ {{ sneaker.discount_price }}</div>
                             </div>
 

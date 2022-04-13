@@ -101,6 +101,7 @@
 
 {% block extrascript %}
     <script type="text/javascript">
+    console.log({{ brand_names|safe }})
         var qtyChart = echarts.init(document.getElementById('echart-qty'));
         var qtyOption = {
             title: {},
@@ -109,6 +110,12 @@
                 data: ['Quantity']
             },
             xAxis: {
+                axisLabel: {
+                    width: 100, //fixed number of pixels
+                    overflow: 'truncate', // or 'break' to continue in a new line
+                    interval: 0,
+                },
+                type: 'category',
                 data: {{ brand_names|safe }}
             },
             yAxis: {},
@@ -130,13 +137,19 @@
                 data: ['Price']
             },
             xAxis: {
+                axisLabel: {
+                    width: 100, //fixed number of pixels
+                    overflow: 'truncate', // or 'break' to continue in a new line
+                    interval: 0,
+                },
+                type: 'category',
                 data: {{ brand_names|safe }}
             },
             yAxis: {},
             series: [
                 {
                     name: 'Price',
-                    type: 'bar',
+                    type: 'line',
                     data: {{ brand_prices|safe }}
                 },
             ]

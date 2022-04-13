@@ -9,7 +9,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_user')
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='order_address')
 
-    total_paid = models.DecimalField(max_digits=5, decimal_places=2)
+    total_paid = models.DecimalField(max_digits=8, decimal_places=2)
     order_key = models.CharField(max_length=200)
     trade_key = models.CharField(max_length=200)
     payment_option = models.CharField(max_length=200, blank=True)
@@ -27,7 +27,7 @@ class Order(models.Model):
         verbose_name_plural = 'Orders'
 
     def __str__(self):
-        return str(self.created_at)
+        return str(self.order_key)
 
 
 class OrderItem(models.Model):
