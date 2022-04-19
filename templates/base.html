@@ -30,9 +30,28 @@
                     <a class="nav-link link-light" aria-current="page"
                        href="#">Home</a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle link-light" href="#" id="navbarDarkDropdownMenuLink"
+                       role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Brand
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                             class="bi bi-chevron-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                        {% for brand in brands %}
+                            <li><a class="dropdown-item" href="{{ brand.get_absolute_url }}">{{ brand.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
             </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="#" method="get">
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{% url 'apps.sneaker:search' %}" method="get">
                 <input name="keywords" type="search" class="form-control" placeholder="Search..." aria-label="Search">
             </form>
 

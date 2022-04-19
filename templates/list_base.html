@@ -1,0 +1,21 @@
+{% load static %}
+<div class="album py-2">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% for sneaker in sneakers %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    {% for image in sneaker.sneaker_image.all %}
+                        <a href="{{ sneaker.get_absolute_url }}">
+                            <img class="img-fluid bd-placeholder-img" width="100%" height="225"
+                                 alt="{{ sneaker.brand.name }}" src="{{ MEDIA_URL }}{{ image.image }}">
+                        </a>
+                    {% endfor %}
+                    <div class="card-body">
+                        <p class="text-dark text-decoration-none">{{ sneaker.brand.name }} {{ sneaker.title|slice:":50" }}</p>
+                        <div class="fw-bold">£ {{ sneaker.discount_price }}</div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
