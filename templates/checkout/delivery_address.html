@@ -1,0 +1,147 @@
+{% extends 'delivery_base.html' %}
+
+{% load static %}
+
+{% block left_content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="mb-1">Delivery Address</h3>
+            <p class="my-2">Select your delivery address</p>
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="col me-md-4">
+            <a href="{% url "apps.account:add_delivery_address" %}" class="text-reset text-decoration-none"
+               role="button"
+               style="max-width: 540px;">
+                <div class="card mb-3 h-100" style="border: dashed 2px #ccc;">
+                    <div class="row g-0 h-100">
+                        <div class="col-12" style="min-height:100px">
+                            <div class="card-body text-center position-absolute top-50 start-50 translate-middle">
+                                <svg style="color:#ccc;" xmlns="http://www.w3.org/2000/svg" width="60"
+                                     height="60" fill="currentColor"
+                                     class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path
+                                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                                <h1 class="h5">Add Address</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% for address in addresses %}
+            <div class="card mb-3 border-1 rounded-0 product-item me-md-4" data-index="{{ option.id }}">
+                <div class="row g-0">
+                    <div class="col">
+                        <div class="card pb-3 rounded-0">
+                            {% if address.default %}
+                                <div class="card-header bg-white small text-muted">
+                                    Selected
+                                </div>
+                            {% endif %}
+                            <div class="card-body small pb-1">
+                                <p class="card-text my-2 fw-bold">{{ address.full_name }}</p>
+                                <p class="card-text my-1">
+                                    Detail address:
+                                    {{ address.address_line }} |
+                                    {{ address.address_line2 }} | {{ address.town_city }}
+                                </p>
+                                <p class="card-text my-1">
+                                    Postcode: {{ address.postcode }}
+                                </p>
+                                <p class="card-text my-1">
+                                    Phone number: {{ address.phone }}
+                                </p>
+                                <div class="pt-1">
+                                    {% if not address.default %}
+                                        <a href="{% url "apps.account:set_default" address.id %}"
+                                           class="text-decoration-none">Select</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block right_content %}
+    <div class="card text-black rounded-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0">Summary</h3>
+            </div>
+            <hr class="my-4">
+
+            <div>
+                {% for item in cart %}
+                    {% with sneaker=item.sneaker %}
+                        <div class="d-flex justify-content-between my-3">
+                            <div class="d-flex flex-row align-items-center">
+                                {% for image in sneaker.sneaker_image.all|slice:":1" %}
+                                    <img src="{{ MEDIA_URL }}{{ image.image }}"
+                                         class="img-fluid rounded-3" alt="Shopping item"
+                                         style="width: 65px;">
+                                {% endfor %}
+                                <div class="ms-3">
+                                    <span class="text-black small">{{ sneaker.brand.name }}</span> <br>
+                                    <span class="text-black small">{{ sneaker.title|slice:20 }}</span>
+                                    <p class="small mt-2 mb-0">Size: UK
+                                        <span id="sz{{ sneaker.id }}">{{ item.sz }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                <div style="width: 100px;">
+                                    <p class="fw-normal mb-0 small">
+                                        £ {{ sneaker.discount_price|floatformat:2 }}</p>
+                                </div>
+                                <div style="width: 50px;">
+                                    <p class="fw-normal mb-0 small">x{{ item.qty }}</p>
+                                </div>
+                                <div style="width: 80px;">
+                                    <p class="mb-0 small">
+                                        £ {{ item.total_price|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endwith %}
+                {% endfor %}
+
+            </div>
+            <hr class="my-4">
+
+            <div class="d-flex justify-content-between">
+                <p class="mb-2">Subtotal</p>
+                <p id="subtotal" class="mb-2 fw-bold">
+                    £ {{ cart.get_subtotal_price|floatformat:2 }}</p>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <p class="mb-2">Shipping</p>
+                <p id="delivery_price" class="mb-2 fw-bold">£ {{ cart.get_delivery_price|floatformat:2 }}</p>
+            </div>
+
+            <hr class="my-2">
+            <div class="d-flex justify-content-between mb-4">
+                <p class="mb-2">Total</p>
+                <p id="total" class="mb-2 fw-bold">£ {{ cart.get_total_price|floatformat:2 }}</p>
+            </div>
+
+            <div class="d-grid">
+                <a role="button" type="button" href="#"
+                   class="btn btn-primary btn-block btn-lg fw-bold">
+                    Pay Securely
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

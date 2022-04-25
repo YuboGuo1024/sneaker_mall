@@ -80,5 +80,3 @@ def search(request):
                 else:
                     sneakers = sneakers & res
     return render(request, 'sneaker/search_result.html', {'sneakers': sneakers})
-
-

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <section class="h-100 h-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col p-4 row">
+                    <div class="col-lg-7">
+                        {% block left_content %}Left {% endblock %}
+                    </div>
+                    <div class="col-lg-5">
+                        {% block right_content %}RIght{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% block script %}
+    {% endblock %}
+{% endblock %}
