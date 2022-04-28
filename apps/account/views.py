@@ -8,6 +8,7 @@ from django.urls import reverse
 
 from apps.account.forms import RegisterForm, UserAddressForm, UserEditForm
 from apps.account.models import Address
+from apps.order.models import Order
 
 
 def account_register(request):
@@ -121,3 +122,10 @@ def set_default(request, id):
 
     return redirect("apps.account:address")
 
+
+@login_required
+def user_orders(request):
+    user_id = request.user.id
+    orders = Order.objects.filter(Q(user_id=user_id) & Q(is_delete=False)).order_by('-created_at')
+
+    return render(request, 'account/user_orders.html', {'orders': orders})

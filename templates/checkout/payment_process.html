@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container my-5">
+        <div>
+            <h3 class="mb-1">Check Your Order</h3>
+            <p class="my-2">Check your order carefully and pay it now</p>
+        </div>
+        <hr>
+        {% include 'order_base.html' %}
+        <hr>
+        <div class="my-4 text-center">
+            {{ form }}
+        </div>
+    </div>
+
+{% endblock %}

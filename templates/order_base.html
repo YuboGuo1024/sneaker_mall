@@ -1,0 +1,66 @@
+{% load static %}
+<div>
+    <div class="row g-3">
+        <div class="col-12 bg-light p-3 d-flex justify-content-between">
+            <div class="d-flex d-flex-inline">
+                <div class="pe-3"><span class="text-muted">Order: {{ order.order_key }}</span></div>
+                <div class="dropdown">
+                    <a class="text-reset text-decoration-none dropdown-toggle" href="#" role="link"
+                       id="dropdownLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dispatched to
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                             class="bi bi-chevron-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownLink">
+                        <li class="item small p-1">{{ order.address.full_name }}</li>
+                        <li class="item small p-1">{{ order.address.address_line }}</li>
+                        <li class="item small p-1">{{ order.address.address_line2 }}</li>
+                        <li class="item small p-1">{{ order.address.postcode }}</li>
+                        <li class="item small p-1">{{ order.address.phone }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-end">
+                Total paid: <span class="fw-bold">£{{ order.total_paid }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="py-2">
+        {% for item in order.items.all %}
+            {% with sneaker=item.sneaker %}
+                <div class="row d-flex justify-content-between my-3 align-items-center">
+                    <div class="d-flex col-6 flex-row align-items-center">
+                        {% for image in sneaker.sneaker_image.all|slice:":1" %}
+                            <img src="{{ MEDIA_URL }}{{ image.image }}"
+                                 class="img-fluid rounded-3" alt="Shopping item"
+                                 style="width: 100px;">
+                        {% endfor %}
+                        <div class="ms-3">
+                            <span class="text-black">{{ sneaker.brand.name }}</span> <br>
+                            <span class="text-black">{{ sneaker.title|slice:20 }}</span>
+                            <p class="small mt-2 mb-0">Size: UK
+                                <span id="sz{{ sneaker.id }}">{{ item.size }}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <p class="fw-normal mb-0">
+                            £ {{ sneaker.discount_price|floatformat:2 }}</p>
+                    </div>
+                    <div class="col-2">
+                        <p class="fw-normal mb-0">x{{ item.quantity }}</p>
+                    </div>
+                    <div class="col-2">
+                        <p class="mb-0">
+                            £ {{ item.price }}</p>
+                    </div>
+                </div>
+            {% endwith %}
+        {% endfor %}
+
+    </div>
+</div>
+
