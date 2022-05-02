@@ -4,6 +4,35 @@
 {% block breadcrumbs %}{% endblock %}
 
 {% block content %}
+    <div class="row my-3">
+        <div class="col-6 mb-4">
+            <div class="card bg-light border-0 shadow">
+                <div class="card-header text-center">
+                    <h4>Quantity of Sales</h4>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <div id="echart-qty" style="width: 600px;height:400px;"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-6 mb-4">
+            <div class="card bg-light border-0 shadow">
+                <div class="card-header text-center">
+                    <h4>Total Prices of Sales</h4>
+                </div>
+                <div class="card-body">
+                    <div class="container text-center">
+                        <div id="echart-price" style="width: 100%;height:400px;"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-12 col-xl-8">
             <div class="row">
@@ -67,6 +96,51 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 
-{% block extrascript %}{% endblock %}
+{% block extrascript %}
+    <script type="text/javascript">
+        var qtyChart = echarts.init(document.getElementById('echart-qty'));
+        var qtyOption = {
+            title: {},
+            tooltip: {},
+            legend: {
+                data: ['Quantity']
+            },
+            xAxis: {
+                data: {{ brand_names|safe }}
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: 'Quantity',
+                    type: 'bar',
+                    data: {{ brand_qtys|safe }}
+                },
+            ]
+        };
+        qtyChart.setOption(qtyOption);
+
+        var priceChart = echarts.init(document.getElementById('echart-price'));
+        var priceOption = {
+            title: {},
+            tooltip: {},
+            legend: {
+                data: ['Price']
+            },
+            xAxis: {
+                data: {{ brand_names|safe }}
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: 'Price',
+                    type: 'bar',
+                    data: {{ brand_prices|safe }}
+                },
+            ]
+        };
+        priceChart.setOption(priceOption);
+    </script>
+{% endblock %}
